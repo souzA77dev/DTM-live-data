@@ -2,33 +2,54 @@
 <html lang="pt">
 <head>
 <meta charset="UTF-8">
-<title>Live Timing – Auto Sort + Gap</title>
+<title>Live Timing – Broadcast Blue/Red</title>
 
 <style>
+/* ===== CORES ===== */
+:root {
+  --bg: #05080d;
+  --row-dark: #0b1220;
+  --row-light: #0f1a30;
+  --blue: #00cfff;
+  --blue-soft: #7fdfff;
+  --red: #ff2e2e;
+  --red-dark: #7a0000;
+  --white: #eaeaea;
+  --muted: #9aa4b2;
+  --best: #ff00ff;
+}
+
+/* ===== BASE ===== */
 * { box-sizing: border-box; }
 
 body {
   margin: 0;
-  background: #000;
-  color: #fff;
+  background: linear-gradient(180deg, #05080d, #020409);
+  color: var(--white);
   font-family: "Arial Narrow", Arial, sans-serif;
 }
 
+/* ===== HEADER ===== */
 header {
-  padding: 10px 16px;
-  border-bottom: 3px solid #008b8b;
+  padding: 12px 18px;
+  background: linear-gradient(90deg, #0b1e3a, #3a0000);
+  border-bottom: 3px solid var(--blue);
 }
 
 header h1 {
   margin: 0;
   font-size: 18px;
+  letter-spacing: 1.5px;
+  color: var(--white);
 }
 
+/* ===== TABLE WRAPPER ===== */
 .wrapper {
-  padding: 10px;
+  padding: 12px;
   overflow-x: auto;
 }
 
+/* ===== TABLE ===== */
 table {
   width: 100%;
   min-width: 1100px;
@@ -36,50 +57,69 @@ table {
   font-size: 13px;
 }
 
+/* ===== HEADER ===== */
 thead th {
-  color: #00ffff;
-  padding: 6px;
-  border-bottom: 2px solid #222;
+  color: var(--blue);
+  font-weight: 600;
+  padding: 8px 6px;
+  border-bottom: 2px solid #1e3a5f;
   white-space: nowrap;
+  text-transform: uppercase;
+  font-size: 12px;
 }
 
+/* ===== ROWS ===== */
 tbody tr {
-  background: #1a1a1a;
-  border-bottom: 1px solid #111;
+  background: var(--row-dark);
+  border-bottom: 1px solid #101a2a;
 }
 
 tbody tr:nth-child(even) {
-  background: #0f0f0f;
+  background: var(--row-light);
 }
 
 tbody tr:hover {
-  background: #222;
+  background: #15264a;
 }
 
+/* ===== CELLS ===== */
 td {
-  padding: 6px;
+  padding: 7px 6px;
   text-align: center;
   white-space: nowrap;
 }
 
-td.left { text-align: left; }
+td.left {
+  text-align: left;
+}
 
+/* ===== POSITION ===== */
 .pos {
   font-weight: bold;
+  color: var(--blue);
 }
 
+/* ===== CAR NUMBER ===== */
 .car-num {
-  color: #00ffff;
+  color: var(--blue-soft);
   font-weight: bold;
 }
 
-.best {
-  color: #ff00ff;
-  font-weight: bold;
-}
-
+/* ===== GAP ===== */
 .gap {
-  color: #ccc;
+  color: var(--muted);
+}
+
+/* ===== BEST LAP ===== */
+.best {
+  color: var(--best);
+  font-weight: bold;
+}
+
+/* ===== LEADER ===== */
+tr.leader {
+  background: linear-gradient(90deg, #102a4a, #3a0000);
+  box-shadow: inset 4px 0 0 var(--red);
 }
 </style>
 </head>
@@ -118,10 +158,10 @@ const drivers = [
   { num: 71, team: "Paul Motorsport", driver: "PAUL, Maximilian", car: "Lamborghini Huracan GT3 EVO", laps: 8, best: "" }
 ];
 
-/* ===== UTILIDADES ===== */
-function toSeconds(time) {
-  if (!time) return Infinity;
-  return parseFloat(time);
+/* ===== FUNÇÕES ===== */
+function toSeconds(t) {
+  if (!t) return Infinity;
+  return parseFloat(t);
 }
 
 function formatGap(sec) {
@@ -133,20 +173,18 @@ function renderTable() {
   const tbody = document.getElementById("grid");
   tbody.innerHTML = "";
 
-  // ordenar por melhor tempo
   drivers.sort((a, b) => toSeconds(a.best) - toSeconds(b.best));
 
   const leaderTime = toSeconds(drivers[0].best);
 
   drivers.forEach((d, i) => {
     let gap = "—";
-
     if (i !== 0 && d.best) {
       gap = formatGap(toSeconds(d.best) - leaderTime);
     }
 
     tbody.innerHTML += `
-      <tr>
+      <tr class="${i === 0 ? "leader" : ""}">
         <td class="pos">${i + 1}</td>
         <td class="car-num">${d.num}</td>
         <td class="left">${d.team}</td>
@@ -160,13 +198,12 @@ function renderTable() {
   });
 }
 
-/* ===== INIT ===== */
+/* INIT */
 renderTable();
 
-/* ===== EXEMPLO LIVE UPDATE =====
-   Simula um piloto a melhorar o tempo */
+/* SIMULA UPDATE LIVE */
 setTimeout(() => {
-  drivers[1].best = "49.050";
+  drivers[1].best = "49.030";
   renderTable();
 }, 4000);
 </script>
