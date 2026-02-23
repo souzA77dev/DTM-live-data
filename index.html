@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<title>Live Data - 1h Running of Indy 250</title>
+
+<style>
+:root {
+  --bg: #0c0c0c;
+  --row: #141414;
+  --row-hover: #1d1d1d;
+  --header: #101010;
+  --border: #2a2a2a;
+  --red: #c40000;
+  --text: #e6e6e6;
+  --muted: #a0a0a0;
+  --highlight: #ffd700;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+header {
+  background: var(--header);
+  border-bottom: 3px solid var(--red);
+  padding: 14px 20px;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.table-wrap { overflow-x: auto; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 900px;
+}
+
+thead th {
+  background: var(--header);
+  color: var(--muted);
+  font-size: 12px;
+  padding: 10px 6px;
+  border-bottom: 1px solid var(--border);
+}
+
+tbody tr {
+  background: var(--row);
+  transition: background 0.15s;
+}
+
+tbody tr:hover { background: var(--row-hover); }
+
+td {
+  padding: 10px 6px;
+  font-size: 13px;
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+}
+
+td.left { text-align: left; }
+td.pos { font-weight: bold; }
+td.best { font-weight: bold; color: var(--highlight); }
+.car { color: var(--muted); }
+
+.pilot-name {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/* MODAL */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background: #111;
+  border: 1px solid var(--border);
+  padding: 20px;
+  width: 300px;
+}
+
+.modal h2 {
+  margin-top: 0;
+  font-size: 16px;
+}
+
+.modal ul {
+  list-style: none;
+  padding: 0;
+}
+
+.modal li {
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+
+.close {
+  margin-top: 10px;
+  text-align: right;
+  cursor: pointer;
+  color: var(--red);
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>Live Data - 1h Running of Indy 250</h1>
+</header>
+
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr>
+      <th>P</th>
+      <th>N</th>
+      <th>NOME</th>
+      <th>EQUIPA</th>
+      <th>MELHOR VOLTA</th>
+    </tr>
+  </thead>
+  <tbody id="grid"></tbody>
+</table>
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="lapModal">
+  <div class="modal-content">
+    <h2 id="modalPilot"></h2>
+    <ul id="modalLaps"></ul>
+    <div class="close" onclick="closeModal()">Fechar</div>
+  </div>
+</div>
+
+<script>
+const dados = [
+  { car: 7, pilot: "Tiago Souza", team: "Arrow Mclaren SPM", laps: ["0:42,863","0:42,708","0:42,707","0:42,711"] },
+  { car: 17, pilot: "Skyline", team: "Arrow Mclaren SPM", laps: ["0:43,052","0:42,816","0:42,856","0:50,000"] },
+  { car: 1, pilot: "Yugi", team: "Arrow Mclaren SPM", laps: ["0:42,856","0:43,098","0:42,968","0:50,000"] }
+];
+
+function toSeconds(t) {
+  if (!t) return null;
+  const [m, s] = t.split(":");
+  return (+m * 60) + parseFloat(s.replace(",", "."));
+}
+
+function fromSeconds(sec) {
+  const m = Math.floor(sec / 60);
+  const r = (sec % 60).toFixed(3);
+  return `${m}:${r.padStart(6,"0")}`;
+}
+
+// calcular melhor volta
+dados.forEach(d => {
+  const tempos = d.laps.map(toSeconds).filter(t => t !== null);
+  if (tempos.length) {
+    d.bestSeconds = Math.min(...tempos);
+    d.bestFormatted = fromSeconds(d.bestSeconds);
+  } else {
+    d.bestSeconds = null;
+    d.bestFormatted = "--";
+  }
+});
+
+// ordenar por melhor volta
+dados.sort((a,b)=>{
+  if (a.bestSeconds === null) return 1;
+  if (b.bestSeconds === null) return -1;
+  return a.bestSeconds - b.bestSeconds;
+});
+
+// render
+const tbody = document.getElementById("grid");
+
+dados.forEach((d,i)=>{
+  tbody.innerHTML += `
+    <tr>
+      <td class="pos">${i+1}</td>
+      <td class="car">${d.car}</td>
+      <td class="left pilot-name" onclick="openModal(${i})">${d.pilot}</td>
+      <td class="left">${d.team}</td>
+      <td class="best">${d.bestFormatted}</td>
+    </tr>
+  `;
+});
+
+function openModal(index) {
+  const d = dados[index];
+  document.getElementById("modalPilot").textContent = d.pilot;
+  const ul = document.getElementById("modalLaps");
+  ul.innerHTML = "";
+  d.laps.forEach((l,i)=>{
+    ul.innerHTML += `<li>Volta ${i+1}: ${l || "--"}</li>`;
+  });
+  document.getElementById("lapModal").style.display = "flex";
+}
+
+function closeModal() {
+  document.getElementById("lapModal").style.display = "none";
+}
+</script>
+
+</body>
+</html>
