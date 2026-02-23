@@ -2,12 +2,10 @@
 <html lang="pt">
 <head>
 <meta charset="UTF-8">
-<title>Live Timing – Clean Broadcast</title>
+<title>Live Timing – Auto Sort + Gap</title>
 
 <style>
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
@@ -16,7 +14,6 @@ body {
   font-family: "Arial Narrow", Arial, sans-serif;
 }
 
-/* HEADER */
 header {
   padding: 10px 16px;
   border-bottom: 3px solid #008b8b;
@@ -25,16 +22,13 @@ header {
 header h1 {
   margin: 0;
   font-size: 18px;
-  letter-spacing: 1px;
 }
 
-/* TABLE WRAPPER */
 .wrapper {
   padding: 10px;
   overflow-x: auto;
 }
 
-/* TABLE */
 table {
   width: 100%;
   min-width: 1100px;
@@ -42,17 +36,13 @@ table {
   font-size: 13px;
 }
 
-/* HEADER */
 thead th {
   color: #00ffff;
-  font-weight: 600;
   padding: 6px;
   border-bottom: 2px solid #222;
-  text-align: center;
   white-space: nowrap;
 }
 
-/* BODY */
 tbody tr {
   background: #1a1a1a;
   border-bottom: 1px solid #111;
@@ -72,11 +62,8 @@ td {
   white-space: nowrap;
 }
 
-td.left {
-  text-align: left;
-}
+td.left { text-align: left; }
 
-/* POS / NUM */
 .pos {
   font-weight: bold;
 }
@@ -86,15 +73,13 @@ td.left {
   font-weight: bold;
 }
 
-/* GAP */
-.gap {
-  color: #cccccc;
-}
-
-/* BEST LAP */
 .best {
   color: #ff00ff;
   font-weight: bold;
+}
+
+.gap {
+  color: #ccc;
 }
 </style>
 </head>
@@ -119,54 +104,72 @@ td.left {
       <th>BEST</th>
     </tr>
   </thead>
-
-  <tbody>
-    <tr>
-      <td class="pos">1</td>
-      <td class="car-num">94</td>
-      <td class="left">SSR Performance</td>
-      <td class="left">THIIM, Nicki</td>
-      <td class="left">Lamborghini Huracan GT3 EVO</td>
-      <td>12</td>
-      <td class="gap">—</td>
-      <td class="best">49.097</td>
-    </tr>
-
-    <tr>
-      <td class="pos">2</td>
-      <td class="car-num">63</td>
-      <td class="left">Lamborghini Team GRT</td>
-      <td class="left">PERERA, Franck</td>
-      <td class="left">Lamborghini Huracan GT3 EVO</td>
-      <td>13</td>
-      <td class="gap">0.090</td>
-      <td class="best">49.187</td>
-    </tr>
-
-    <tr>
-      <td class="pos">3</td>
-      <td class="car-num">69</td>
-      <td class="left">Emil Frey Racing</td>
-      <td class="left">VERMEULEN, Thierry</td>
-      <td class="left">Ferrari 296 GT3</td>
-      <td>10</td>
-      <td class="gap">0.158</td>
-      <td class="best">49.255</td>
-    </tr>
-
-    <tr>
-      <td class="pos">4</td>
-      <td class="car-num">130</td>
-      <td class="left">Mercedes-AMG Team Winward</td>
-      <td class="left">ENGEL, Maro</td>
-      <td class="left">Mercedes-AMG GT3</td>
-      <td>13</td>
-      <td class="gap">0.192</td>
-      <td class="best">49.289</td>
-    </tr>
-  </tbody>
+  <tbody id="grid"></tbody>
 </table>
 </div>
+
+<script>
+/* ===== DADOS ===== */
+const drivers = [
+  { num: 94, team: "SSR Performance", driver: "THIIM, Nicki", car: "Lamborghini Huracan GT3 EVO", laps: 12, best: "49.097" },
+  { num: 63, team: "Lamborghini Team GRT", driver: "PERERA, Franck", car: "Lamborghini Huracan GT3 EVO", laps: 13, best: "49.187" },
+  { num: 69, team: "Emil Frey Racing", driver: "VERMEULEN, Thierry", car: "Ferrari 296 GT3", laps: 10, best: "49.255" },
+  { num: 130, team: "Mercedes-AMG Team Winward", driver: "ENGEL, Maro", car: "Mercedes-AMG GT3", laps: 13, best: "49.289" },
+  { num: 71, team: "Paul Motorsport", driver: "PAUL, Maximilian", car: "Lamborghini Huracan GT3 EVO", laps: 8, best: "" }
+];
+
+/* ===== UTILIDADES ===== */
+function toSeconds(time) {
+  if (!time) return Infinity;
+  return parseFloat(time);
+}
+
+function formatGap(sec) {
+  return "+" + sec.toFixed(3);
+}
+
+/* ===== RENDER ===== */
+function renderTable() {
+  const tbody = document.getElementById("grid");
+  tbody.innerHTML = "";
+
+  // ordenar por melhor tempo
+  drivers.sort((a, b) => toSeconds(a.best) - toSeconds(b.best));
+
+  const leaderTime = toSeconds(drivers[0].best);
+
+  drivers.forEach((d, i) => {
+    let gap = "—";
+
+    if (i !== 0 && d.best) {
+      gap = formatGap(toSeconds(d.best) - leaderTime);
+    }
+
+    tbody.innerHTML += `
+      <tr>
+        <td class="pos">${i + 1}</td>
+        <td class="car-num">${d.num}</td>
+        <td class="left">${d.team}</td>
+        <td class="left">${d.driver}</td>
+        <td class="left">${d.car}</td>
+        <td>${d.laps}</td>
+        <td class="gap">${gap}</td>
+        <td class="best">${d.best || "--"}</td>
+      </tr>
+    `;
+  });
+}
+
+/* ===== INIT ===== */
+renderTable();
+
+/* ===== EXEMPLO LIVE UPDATE =====
+   Simula um piloto a melhorar o tempo */
+setTimeout(() => {
+  drivers[1].best = "49.050";
+  renderTable();
+}, 4000);
+</script>
 
 </body>
 </html>
