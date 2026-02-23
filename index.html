@@ -2,10 +2,9 @@
 <html lang="pt">
 <head>
 <meta charset="UTF-8">
-<title>Live Timing – Indy Style</title>
+<title>Live Timing – Clean Broadcast</title>
 
 <style>
-/* ===== RESET / BASE ===== */
 * {
   box-sizing: border-box;
 }
@@ -17,10 +16,10 @@ body {
   font-family: "Arial Narrow", Arial, sans-serif;
 }
 
-/* ===== HEADER ===== */
+/* HEADER */
 header {
   padding: 10px 16px;
-  border-bottom: 3px solid #a00000;
+  border-bottom: 3px solid #008b8b;
 }
 
 header h1 {
@@ -29,22 +28,23 @@ header h1 {
   letter-spacing: 1px;
 }
 
-/* ===== TABLE ===== */
+/* TABLE WRAPPER */
 .wrapper {
   padding: 10px;
   overflow-x: auto;
 }
 
+/* TABLE */
 table {
   width: 100%;
-  min-width: 1200px;
+  min-width: 1100px;
   border-collapse: collapse;
   font-size: 13px;
 }
 
-/* ===== HEADER ROW ===== */
+/* HEADER */
 thead th {
-  color: #00f0f0;
+  color: #00ffff;
   font-weight: 600;
   padding: 6px;
   border-bottom: 2px solid #222;
@@ -52,67 +52,49 @@ thead th {
   white-space: nowrap;
 }
 
-/* ===== BODY ROWS ===== */
+/* BODY */
 tbody tr {
-  background: #5a0000;
-  border-bottom: 1px solid #2a0000;
+  background: #1a1a1a;
+  border-bottom: 1px solid #111;
+}
+
+tbody tr:nth-child(even) {
+  background: #0f0f0f;
 }
 
 tbody tr:hover {
-  background: #6b0000;
+  background: #222;
 }
 
 td {
   padding: 6px;
   text-align: center;
   white-space: nowrap;
-  border-right: 1px solid #2a0000;
 }
 
 td.left {
   text-align: left;
 }
 
-/* ===== STATES ===== */
-.state {
-  font-weight: bold;
-}
-
-.state.pit {
-  color: #ff2b2b;
-}
-
-.state.run {
-  color: #00ff6a;
-}
-
-/* ===== SECTORS ===== */
-.sector.yellow {
-  color: #ffd700;
-}
-
-.sector.green {
-  color: #00ff6a;
-}
-
-/* ===== BEST TIMES ===== */
-.best {
-  color: #ff3cff;
-  font-weight: bold;
-}
-
-.bspd {
-  color: #ff3cff;
-}
-
-/* ===== POSITION ===== */
+/* POS / NUM */
 .pos {
   font-weight: bold;
 }
 
-/* ===== CAR NUMBER ===== */
-.car {
-  color: #ffd700;
+.car-num {
+  color: #00ffff;
+  font-weight: bold;
+}
+
+/* GAP */
+.gap {
+  color: #cccccc;
+}
+
+/* BEST LAP */
+.best {
+  color: #ff00ff;
+  font-weight: bold;
 }
 </style>
 </head>
@@ -120,7 +102,7 @@ td.left {
 <body>
 
 <header>
-  <h1>LIVE TIMING – INDY STYLE</h1>
+  <h1>LIVE TIMING</h1>
 </header>
 
 <div class="wrapper">
@@ -129,75 +111,58 @@ td.left {
     <tr>
       <th>POS</th>
       <th>NUM</th>
-      <th>STATE</th>
-      <th class="left">DRIVER</th>
       <th class="left">TEAM</th>
+      <th class="left">DRIVER</th>
+      <th class="left">CAR</th>
       <th>LAPS</th>
       <th>GAP</th>
-      <th>INT</th>
-      <th>T1</th>
-      <th>T2</th>
-      <th>LAST</th>
-      <th>SPD</th>
       <th>BEST</th>
-      <th>B.SPD</th>
-      <th>PITS</th>
     </tr>
   </thead>
 
   <tbody>
     <tr>
       <td class="pos">1</td>
-      <td class="car">20</td>
-      <td class="state pit">PIT</td>
-      <td class="left">Alexander Rossi</td>
-      <td class="left">Ed Carpenter Racing</td>
-      <td>19</td>
-      <td>—</td>
-      <td>—</td>
-      <td class="sector yellow">139.801</td>
-      <td class="sector yellow">148.327</td>
-      <td>48.206</td>
-      <td>74.679</td>
-      <td class="best">20.625</td>
-      <td class="bspd">174.542</td>
-      <td>10</td>
+      <td class="car-num">94</td>
+      <td class="left">SSR Performance</td>
+      <td class="left">THIIM, Nicki</td>
+      <td class="left">Lamborghini Huracan GT3 EVO</td>
+      <td>12</td>
+      <td class="gap">—</td>
+      <td class="best">49.097</td>
     </tr>
 
     <tr>
       <td class="pos">2</td>
-      <td class="car">21</td>
-      <td class="state pit">PIT</td>
-      <td class="left">Christian Rasmussen</td>
-      <td class="left">Ed Carpenter Racing</td>
-      <td>12</td>
-      <td>0.073</td>
-      <td>0.073</td>
-      <td class="sector yellow">138.015</td>
-      <td class="sector yellow">149.392</td>
-      <td>28.388</td>
-      <td>126.816</td>
-      <td class="best">20.699</td>
-      <td class="bspd">173.924</td>
-      <td>6</td>
+      <td class="car-num">63</td>
+      <td class="left">Lamborghini Team GRT</td>
+      <td class="left">PERERA, Franck</td>
+      <td class="left">Lamborghini Huracan GT3 EVO</td>
+      <td>13</td>
+      <td class="gap">0.090</td>
+      <td class="best">49.187</td>
     </tr>
 
     <tr>
-      <td class="pos">14</td>
-      <td class="car">28</td>
-      <td class="state run">RUN</td>
-      <td class="left">Marcus Ericsson</td>
-      <td class="left">Andretti Global</td>
-      <td>22</td>
-      <td>0.537</td>
-      <td>0.018</td>
-      <td class="sector green">183.219</td>
-      <td class="sector green">177.700</td>
-      <td>23.634</td>
-      <td>152.323</td>
-      <td class="best">21.163</td>
-      <td class="bspd">170.109</td>
-      <td>4</td>
+      <td class="pos">3</td>
+      <td class="car-num">69</td>
+      <td class="left">Emil Frey Racing</td>
+      <td class="left">VERMEULEN, Thierry</td>
+      <td class="left">Ferrari 296 GT3</td>
+      <td>10</td>
+      <td class="gap">0.158</td>
+      <td class="best">49.255</td>
+    </tr>
+
+    <tr>
+      <td class="pos">4</td>
+      <td class="car-num">130</td>
+      <td class="left">Mercedes-AMG Team Winward</td>
+      <td class="left">ENGEL, Maro</td>
+      <td class="left">Mercedes-AMG GT3</td>
+      <td>13</td>
+      <td class="gap">0.192</td>
+      <td class="best">49.289</td>
     </tr>
   </tbody>
 </table>
