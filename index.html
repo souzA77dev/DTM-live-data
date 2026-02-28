@@ -5,115 +5,141 @@
 <title>Live Timing DTM</title>
 
 <style>
-:root {
-  --bg-main:#02050c;
-  --bg-header:#081a33;
+:root{
+  --bg-main:#04070d;
+  --bg-header:#07162b;
+  --row-a:#0b1424;
+  --row-b:#0f1c33;
 
-  --row1:#0b162b;
-  --row2:#0e1d38;
-  --row-hover:#132858;
-
-  --border:#1a2f55;
-
-  --blue:#1ecbff;
-  --blue-soft:#0b4a66;
-  --red:#e53935;
-
-  --white:#e6ecf5;
+  --blue:#00cfff;
+  --red:#ff2e2e;
+  --white:#e8ecf1;
   --muted:#9aa4b2;
-  --best:#ff4fd8;
+  --best:#ff00ff;
 }
 
-* { box-sizing:border-box; }
+*{
+  box-sizing:border-box;
+}
 
-body {
+body{
   margin:0;
   background:
-    radial-gradient(1000px 300px at top, #081a33, transparent),
-    linear-gradient(180deg, #02050c, #020409);
+    radial-gradient(circle at top,#0a1630 0%,#04070d 60%);
   color:var(--white);
-  font-family:"Arial Narrow", Arial, sans-serif;
-}
-
-/* HEADER */
-header {
-  padding:12px 18px;
-  background:linear-gradient(90deg, #081a33, #2a0505);
-  border-bottom:2px solid var(--blue);
-}
-
-header h1 {
-  margin:0;
-  font-size:15px;
-  letter-spacing:3px;
-  color:var(--blue);
-}
-
-/* WRAPPER */
-.wrapper {
-  padding:14px;
-}
-
-/* TABLE */
-table {
-  width:100%;
-  border-collapse:collapse;
+  font-family:"Segoe UI",Arial,sans-serif;
   font-size:13px;
 }
 
-thead th {
-  padding:8px 6px;
-  font-size:11px;
-  letter-spacing:1px;
+/* ===== HEADER ===== */
+header{
+  padding:14px 20px;
+  background:
+    linear-gradient(90deg,#0b1f3d 0%,#250000 100%);
+  border-bottom:3px solid var(--blue);
+  box-shadow:0 4px 12px rgba(0,0,0,.6);
+}
+
+header h1{
+  margin:0;
+  font-size:15px;
+  font-weight:600;
+  letter-spacing:2px;
   text-transform:uppercase;
+}
+
+/* ===== LAYOUT ===== */
+.wrapper{
+  padding:16px;
+}
+
+/* ===== TABLE ===== */
+table{
+  width:100%;
+  border-collapse:collapse;
+  background:linear-gradient(180deg,#081224,#050b17);
+  box-shadow:
+    0 10px 30px rgba(0,0,0,.6),
+    inset 0 1px 0 rgba(255,255,255,.03);
+}
+
+/* HEADER */
+thead th{
+  padding:9px 8px;
+  font-size:11px;
+  font-weight:600;
   color:var(--blue);
-  border-bottom:2px solid var(--border);
+  text-transform:uppercase;
+  letter-spacing:1px;
+  border-bottom:2px solid #1c3558;
+}
+
+/* ROWS */
+tbody tr{
+  background:var(--row-a);
+  transition:background .2s ease;
+}
+
+tbody tr:nth-child(even){
+  background:var(--row-b);
+}
+
+tbody tr:hover{
+  background:#14264a;
+}
+
+/* CELLS */
+td{
+  padding:8px 8px;
   text-align:center;
+  border-bottom:1px solid #0a1426;
 }
 
-tbody tr {
-  background:linear-gradient(90deg, var(--row1), #081326);
-  border-bottom:1px solid var(--border);
+td.left{
+  text-align:left;
 }
 
-tbody tr:nth-child(even) {
-  background:linear-gradient(90deg, var(--row2), #0a1630);
-}
-
-tbody tr:hover {
-  background:linear-gradient(90deg, var(--row-hover), #0d1b3a);
-}
-
-td {
-  padding:7px 6px;
-  white-space:nowrap;
-  text-align:center;
-}
-
-td.left { text-align:left; }
-
-.pos {
+/* POS */
+.pos{
   color:var(--blue);
-  font-weight:bold;
+  font-weight:700;
 }
 
-.best {
-  color:var(--best);
-  font-weight:bold;
-}
-
-.gap {
+/* GAP */
+.gap{
   color:var(--muted);
+  font-size:12px;
+}
+
+/* BEST */
+.best{
+  color:var(--best);
+  font-weight:700;
+  letter-spacing:.5px;
 }
 
 /* LEADER */
-tr.leader {
-  background:linear-gradient(90deg, #102a55, #3a0606);
-  box-shadow:inset 4px 0 0 var(--red);
+tr.leader{
+  background:
+    linear-gradient(90deg,#0e2b52 0%,#3a0000 100%);
+  box-shadow:
+    inset 4px 0 0 var(--red),
+    inset 0 1px 0 rgba(255,255,255,.08);
 }
 
-tr.leader .pos {
+tr.leader .pos{
   color:#ffffff;
+}
+
+/* RESPONSIVE */
+@media (max-width:900px){
+  table{
+    font-size:12px;
+  }
+
+  thead th{
+    font-size:10px;
+  }
 }
 </style>
 </head>
@@ -121,24 +147,24 @@ tr.leader .pos {
 <body>
 
 <header>
-  <h1>LIVE TIMING QUALIFY 1 – NORISRING</h1>
+  <h1>Live Timing · Qualify 1 · Norisring</h1>
 </header>
 
 <div class="wrapper">
-<table>
-  <thead>
-    <tr>
-      <th>POS</th>
-      <th>NUM</th>
-      <th class="left">PILOTO</th>
-      <th class="left">EQUIPE</th>
-      <th class="left">CARRO</th>
-      <th>GAP</th>
-      <th>BEST</th>
-    </tr>
-  </thead>
-  <tbody id="grid"></tbody>
-</table>
+  <table>
+    <thead>
+      <tr>
+        <th>POS</th>
+        <th>NUM</th>
+        <th class="left">PILOTO</th>
+        <th class="left">EQUIPE</th>
+        <th class="left">CARRO</th>
+        <th>GAP</th>
+        <th>BEST</th>
+      </tr>
+    </thead>
+    <tbody id="grid"></tbody>
+  </table>
 </div>
 
 <script>
@@ -164,22 +190,22 @@ const drivers = [
   { num:"8",  driver:"Allan Jeferson", team:"Lira Motorsports", car:"Audi RS5", best:"00.000" }
 ];
 
-function toSeconds(t) {
+function toSeconds(t){
   return parseFloat(t);
 }
 
-function renderTable() {
+function renderTable(){
   const tbody = document.getElementById("grid");
   tbody.innerHTML = "";
 
-  drivers.sort((a,b) => toSeconds(a.best) - toSeconds(b.best));
+  drivers.sort((a,b)=>toSeconds(a.best)-toSeconds(b.best));
   const leaderTime = toSeconds(drivers[0].best);
 
-  drivers.forEach((d,i) => {
-    const gap = i === 0 ? "—" : "+" + (toSeconds(d.best) - leaderTime).toFixed(3);
+  drivers.forEach((d,i)=>{
+    const gap = i===0 ? "—" : "+"+(toSeconds(d.best)-leaderTime).toFixed(3);
 
     tbody.innerHTML += `
-      <tr class="${i===0 ? "leader" : ""}">
+      <tr class="${i===0?"leader":""}">
         <td class="pos">${i+1}</td>
         <td>${d.num}</td>
         <td class="left">${d.driver}</td>
