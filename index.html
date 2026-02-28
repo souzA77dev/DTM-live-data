@@ -2,7 +2,7 @@
 <html lang="pt">
 <head>
 <meta charset="UTF-8">
-<title>Live Timing Overlay</title>
+<title>Live Timing DTM</title>
 
 <style>
 :root {
@@ -37,7 +37,6 @@ header h1 {
   letter-spacing:2px;
 }
 
-/* TABLE */
 .wrapper {
   padding:12px;
 }
@@ -87,7 +86,7 @@ tr.leader {
 <body>
 
 <header>
-  <h1>LIVE TIMING</h1>
+  <h1>Live Timing Qualify 1 - Norisring</h1>
 </header>
 
 <div class="wrapper">
@@ -96,9 +95,9 @@ tr.leader {
     <tr>
       <th>POS</th>
       <th>NUM</th>
-      <th class="left">TEAM</th>
-      <th class="left">DRIVER</th>
-      <th class="left">CAR</th>
+      <th class="left">PILOTO</th>
+      <th class="left">EQUIPE</th>
+      <th class="left">CARRO</th>
       <th>GAP</th>
       <th>BEST</th>
     </tr>
@@ -110,27 +109,26 @@ tr.leader {
 <script>
 // 🔧 EDITAS APENAS AQUI
 const drivers = [
-  { num: "7", team: "Oracle Garage 43 VF Motorsport", driver: "Tiago Souza", car: "BMW M4", best: "00.000" },
-  { num: "6", team: "Oracle Garage 43 VF Motorsport", driver: "Enty", car: "BMW M4", best: "00.000" },
-  { num: "76", team: "Nyx Racing", driver: "Nikolas", car: "BMW M4", best: "00.000" },
-  { num: "51", team: "Nyx Racing", driver: "Theo Torres", car: "BMW M4", best: "00.000" },
-  { num: "30", team: "TLZ Sports", driver: "Mateus Lucas", car: "BMW M4", best: "00.000" },
-  { num: "37", team: "Shadow Land Crew", driver: "Vitor Borges", car: "Audi RS5", best: "00.000" },
-  { num: "54", team: "Spark Racing", driver: "Marlon", car: "Audi RS5", best: "00.000" },
-  { num: "31", team: "Best Never Rest", driver: "Miss Circle", car: "Mercedes AMG-C63", best: "00.000" },
-  { num: "48", team: "Korecingue Racing Division", driver: "Vitor Henrique", car: "Mercedes AMG-C63", best: "00.000" },
-  { num: "13", team: "Korecingue Racing Division", driver: "Luiz Costa", car: "Mercedes AMG-C63", best: "00.000" },
-  { num: "22", team: "Maranhao Racing Team", driver: "Icael", car: "Audi RS5", best: "00.000" },
-  { num: "26", team: "Spark Racing", driver: "Gabriel Pedra", car: "Audi RS5", best: "00.000" },
-  { num: "93", team: "Best Never Rest", driver: "Karin", car: "Mercedes AMG-C63", best: "00.000" },
-  { num: "96", team: "TLZ Sports", driver: "Peter Saline", car: "BMW M4", best: "00.000" },
-  { num: "19", team: "Delta Speed by SRT", driver: "Eduardo Bermudez", car: "Mercedes AMG-C63", best: "00.000" },
-  { num: "23", team: "Maranhao Racing Team", driver: "White Boomslang", car: "Audi RS5", best: "00.000" },
-  { num: "91", team: "ARXYZ Team", driver: "Sea MissXyz", car: "BMW M4", best: "00.000" },
-  { num: "8",  team: "Lira Motorsports", driver: "Allan Jeferson", car: "Audi RS5", best: "00.000" }
+  { num:"7",  driver:"Tiago Souza", team:"Oracle Garage 43 VF Motorsport", car:"BMW M4", best:"00.000" },
+  { num:"6",  driver:"Enty", team:"Oracle Garage 43 VF Motorsport", car:"BMW M4", best:"00.000" },
+  { num:"76", driver:"Nikolas", team:"Nyx Racing", car:"BMW M4", best:"00.000" },
+  { num:"51", driver:"Theo Torres", team:"Nyx Racing", car:"BMW M4", best:"00.000" },
+  { num:"30", driver:"Mateus Lucas", team:"TLZ Sports", car:"BMW M4", best:"00.000" },
+  { num:"37", driver:"Vitor Borges", team:"Shadow Land Crew", car:"Audi RS5", best:"00.000" },
+  { num:"54", driver:"Marlon", team:"Spark Racing", car:"Audi RS5", best:"00.000" },
+  { num:"31", driver:"Miss Circle", team:"Best Never Rest", car:"Mercedes AMG-C63", best:"00.000" },
+  { num:"48", driver:"Vitor Henrique", team:"Korecingue Racing Division", car:"Mercedes AMG-C63", best:"00.000" },
+  { num:"13", driver:"Luiz Costa", team:"Korecingue Racing Division", car:"Mercedes AMG-C63", best:"00.000" },
+  { num:"22", driver:"Icael", team:"Maranhao Racing Team", car:"Audi RS5", best:"00.000" },
+  { num:"26", driver:"Gabriel Pedra", team:"Spark Racing", car:"Audi RS5", best:"00.000" },
+  { num:"93", driver:"Karin", team:"Best Never Rest", car:"Mercedes AMG-C63", best:"00.000" },
+  { num:"96", driver:"Peter Saline", team:"TLZ Sports", car:"BMW M4", best:"00.000" },
+  { num:"19", driver:"Eduardo Bermudez", team:"Delta Speed by SRT", car:"Mercedes AMG-C63", best:"00.000" },
+  { num:"23", driver:"White Boomslang", team:"Maranhao Racing Team", car:"Audi RS5", best:"00.000" },
+  { num:"91", driver:"Sea MissXyz", team:"ARXYZ Team", car:"BMW M4", best:"00.000" },
+  { num:"8",  driver:"Allan Jeferson", team:"Lira Motorsports", car:"Audi RS5", best:"00.000" }
 ];
 
-// ⚙️ LÓGICA
 function toSeconds(t) {
   return parseFloat(t);
 }
@@ -149,8 +147,8 @@ function renderTable() {
       <tr class="${i===0 ? "leader" : ""}">
         <td class="pos">${i+1}</td>
         <td>${d.num}</td>
-        <td class="left">${d.team}</td>
         <td class="left">${d.driver}</td>
+        <td class="left">${d.team}</td>
         <td class="left">${d.car}</td>
         <td class="gap">${gap}</td>
         <td class="best">${d.best}</td>
