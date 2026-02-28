@@ -6,16 +6,16 @@
 
 <style>
 :root{
-  --bg-main:#04070d;
-  --bg-header:#07162b;
-  --row-a:#0b1424;
-  --row-b:#0f1c33;
+  --bg-main:#05070b;
+  --bg-header:#0a1220;
 
-  --blue:#00cfff;
-  --red:#ff2e2e;
-  --white:#e8ecf1;
+  --row-a:#0b0f17;
+  --row-b:#111827;
+
+  --blue:#1da9ff;
+  --white:#f2f4f8;
   --muted:#9aa4b2;
-  --best:#ff00ff;
+  --best:#1da9ff;
 }
 
 *{
@@ -25,7 +25,7 @@
 body{
   margin:0;
   background:
-    radial-gradient(circle at top,#0a1630 0%,#04070d 60%);
+    radial-gradient(circle at top,#0e1628 0%,#05070b 65%);
   color:var(--white);
   font-family:"Segoe UI",Arial,sans-serif;
   font-size:13px;
@@ -34,10 +34,9 @@ body{
 /* ===== HEADER ===== */
 header{
   padding:14px 20px;
-  background:
-    linear-gradient(90deg,#0b1f3d 0%,#250000 100%);
-  border-bottom:3px solid var(--blue);
-  box-shadow:0 4px 12px rgba(0,0,0,.6);
+  background:linear-gradient(90deg,#0b1220,#020409);
+  border-bottom:2px solid var(--blue);
+  box-shadow:0 4px 14px rgba(0,0,0,.7);
 }
 
 header h1{
@@ -57,10 +56,10 @@ header h1{
 table{
   width:100%;
   border-collapse:collapse;
-  background:linear-gradient(180deg,#081224,#050b17);
+  background:linear-gradient(180deg,#080c14,#05070b);
   box-shadow:
-    0 10px 30px rgba(0,0,0,.6),
-    inset 0 1px 0 rgba(255,255,255,.03);
+    0 12px 32px rgba(0,0,0,.75),
+    inset 0 1px 0 rgba(255,255,255,.04);
 }
 
 /* HEADER */
@@ -70,8 +69,8 @@ thead th{
   font-weight:600;
   color:var(--blue);
   text-transform:uppercase;
-  letter-spacing:1px;
-  border-bottom:2px solid #1c3558;
+  letter-spacing:1.2px;
+  border-bottom:2px solid #1b2a44;
 }
 
 /* ROWS */
@@ -85,14 +84,14 @@ tbody tr:nth-child(even){
 }
 
 tbody tr:hover{
-  background:#14264a;
+  background:#16233d;
 }
 
 /* CELLS */
 td{
   padding:8px 8px;
   text-align:center;
-  border-bottom:1px solid #0a1426;
+  border-bottom:1px solid #0a1020;
 }
 
 td.left{
@@ -113,17 +112,16 @@ td.left{
 
 /* BEST */
 .best{
-  color:var(--best);
+  color:var(--white);
   font-weight:700;
-  letter-spacing:.5px;
+  letter-spacing:.4px;
 }
 
 /* LEADER */
 tr.leader{
-  background:
-    linear-gradient(90deg,#0e2b52 0%,#3a0000 100%);
+  background:linear-gradient(90deg,#12294a,#05070b);
   box-shadow:
-    inset 4px 0 0 var(--red),
+    inset 4px 0 0 var(--blue),
     inset 0 1px 0 rgba(255,255,255,.08);
 }
 
@@ -133,13 +131,8 @@ tr.leader .pos{
 
 /* RESPONSIVE */
 @media (max-width:900px){
-  table{
-    font-size:12px;
-  }
-
-  thead th{
-    font-size:10px;
-  }
+  table{ font-size:12px; }
+  thead th{ font-size:10px; }
 }
 </style>
 </head>
@@ -151,20 +144,20 @@ tr.leader .pos{
 </header>
 
 <div class="wrapper">
-  <table>
-    <thead>
-      <tr>
-        <th>POS</th>
-        <th>NUM</th>
-        <th class="left">PILOTO</th>
-        <th class="left">EQUIPE</th>
-        <th class="left">CARRO</th>
-        <th>GAP</th>
-        <th>BEST</th>
-      </tr>
-    </thead>
-    <tbody id="grid"></tbody>
-  </table>
+<table>
+  <thead>
+    <tr>
+      <th>POS</th>
+      <th>NUM</th>
+      <th>PILOTO</th>
+      <th>EQUIPE</th>
+      <th>CARRO</th>
+      <th>GAP</th>
+      <th>BEST</th>
+    </tr>
+  </thead>
+  <tbody id="grid"></tbody>
+</table>
 </div>
 
 <script>
