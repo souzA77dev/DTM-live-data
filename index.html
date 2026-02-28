@@ -2,7 +2,7 @@
 <html lang="pt">
 <head>
 <meta charset="UTF-8">
-<title>Live Timing – Manual Entry</title>
+<title>Live Timing Overlay</title>
 
 <style>
 :root {
@@ -25,61 +25,25 @@ body {
   font-family:"Arial Narrow",Arial,sans-serif;
 }
 
-/* HEADER */
 header {
-  padding:12px 18px;
+  padding:10px 16px;
   background:linear-gradient(90deg,#0b1e3a,#3a0000);
   border-bottom:3px solid var(--blue);
 }
 
 header h1 {
   margin:0;
-  font-size:18px;
-  letter-spacing:1.5px;
-}
-
-/* INPUT PANEL */
-.panel {
-  padding:12px 18px;
-  display:grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap:10px;
-  background:#070d18;
-  border-bottom:1px solid #1e3a5f;
-}
-
-.panel input, .panel button {
-  padding:8px;
-  background:#0b1220;
-  border:1px solid #1e3a5f;
-  color:var(--white);
-  font-size:13px;
-}
-
-.panel input::placeholder {
-  color:var(--muted);
-}
-
-.panel button {
-  cursor:pointer;
-  background:var(--blue);
-  color:#000;
-  font-weight:bold;
-}
-
-.panel button:hover {
-  opacity:0.9;
+  font-size:16px;
+  letter-spacing:2px;
 }
 
 /* TABLE */
 .wrapper {
   padding:12px;
-  overflow-x:auto;
 }
 
 table {
   width:100%;
-  min-width:1000px;
   border-collapse:collapse;
   font-size:13px;
 }
@@ -99,10 +63,6 @@ tbody tr {
 
 tbody tr:nth-child(even) {
   background:var(--row2);
-}
-
-tbody tr:hover {
-  background:#15264a;
 }
 
 td {
@@ -130,16 +90,6 @@ tr.leader {
   <h1>LIVE TIMING</h1>
 </header>
 
-<!-- INPUT PANEL -->
-<div class="panel">
-  <input id="num" placeholder="Nº">
-  <input id="team" placeholder="Equipa">
-  <input id="driver" placeholder="Piloto">
-  <input id="car" placeholder="Carro">
-  <input id="best" placeholder="Melhor tempo (ex: 49.123)">
-  <button onclick="addDriver()">Adicionar</button>
-</div>
-
 <div class="wrapper">
 <table>
   <thead>
@@ -158,35 +108,19 @@ tr.leader {
 </div>
 
 <script>
-const drivers = [];
+// 🔧 EDITAS APENAS AQUI
+const drivers = [
+  { num: "23", team: "Red Bull", driver: "Max Verstappen", car: "RB19", best: "48.921" },
+  { num: "44", team: "Mercedes", driver: "Lewis Hamilton", car: "W14", best: "49.102" },
+  { num: "16", team: "Ferrari", driver: "Charles Leclerc", car: "SF-23", best: "49.310" },
+  { num: "4",  team: "McLaren", driver: "Lando Norris", car: "MCL60", best: "49.488" }
+];
 
-/* UTIL */
+// ⚙️ LÓGICA
 function toSeconds(t) {
-  if (!t) return Infinity;
   return parseFloat(t);
 }
 
-function formatGap(sec) {
-  return "+" + sec.toFixed(3);
-}
-
-/* ADD DRIVER */
-function addDriver() {
-  const num = document.getElementById("num").value;
-  const team = document.getElementById("team").value;
-  const driver = document.getElementById("driver").value;
-  const car = document.getElementById("car").value;
-  const best = document.getElementById("best").value;
-
-  if (!driver || !best) return;
-
-  drivers.push({ num, team, driver, car, best });
-
-  document.querySelectorAll(".panel input").forEach(i => i.value = "");
-  renderTable();
-}
-
-/* RENDER */
 function renderTable() {
   const tbody = document.getElementById("grid");
   tbody.innerHTML = "";
@@ -195,22 +129,23 @@ function renderTable() {
   const leaderTime = toSeconds(drivers[0].best);
 
   drivers.forEach((d,i) => {
-    let gap = "—";
-    if (i !== 0) gap = formatGap(toSeconds(d.best) - leaderTime);
+    const gap = i === 0 ? "—" : "+" + (toSeconds(d.best) - leaderTime).toFixed(3);
 
     tbody.innerHTML += `
       <tr class="${i===0 ? "leader" : ""}">
         <td class="pos">${i+1}</td>
-        <td>${d.num || "--"}</td>
-        <td class="left">${d.team || "--"}</td>
+        <td>${d.num}</td>
+        <td class="left">${d.team}</td>
         <td class="left">${d.driver}</td>
-        <td class="left">${d.car || "--"}</td>
+        <td class="left">${d.car}</td>
         <td class="gap">${gap}</td>
         <td class="best">${d.best}</td>
       </tr>
     `;
   });
 }
+
+renderTable();
 </script>
 
 </body>
